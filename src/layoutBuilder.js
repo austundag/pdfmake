@@ -29,12 +29,13 @@ function addAll(target, otherArray){
  * @param {Object} pageSize - an object defining page width and height
  * @param {Object} pageMargins - an object defining top, left, right and bottom margins
  */
-function LayoutBuilder(pageSize, pageMargins, imageMeasure) {
+function LayoutBuilder(pageSize, pageMargins, imageMeasure, pagesInfoCallback) {
 	this.pageSize = pageSize;
 	this.pageMargins = pageMargins;
 	this.tracker = new TraversalTracker();
-    this.imageMeasure = imageMeasure;
-    this.tableLayouts = {};
+  this.imageMeasure = imageMeasure;
+  this.tableLayouts = {};
+  this.pagesInfoCallback = pagesInfoCallback;
 }
 
 LayoutBuilder.prototype.registerTableLayouts = function (tableLayouts) {
@@ -182,6 +183,11 @@ LayoutBuilder.prototype.addDynamicRepeatable = function(nodeGetter, sizeFunction
 };
 
 LayoutBuilder.prototype.addHeadersAndFooters = function(header, footer) {
+  if (this.pagesInfoCallback) {
+  	var pages = this.writer.context().pages;
+  	this.pagesInfoCallback(pages);
+  }
+
   var headerSizeFct = function(pageSize, pageMargins){
     return {
       x: 0,
