@@ -178,7 +178,7 @@ TableProcessor.prototype.endRow = function(rowIndex, writer, pageBreaks) {
         var pageBreak = pageBreaks[i];
         ys[ys.length - 1].y1 = pageBreak.prevY;
 
-        ys.push({y0: pageBreak.y, page: pageBreak.prevPage + 1});
+        ys.push({y0: pageBreak.y + 26, page: pageBreak.prevPage + 1});  // TDP Specific Hack
       }
     }
 
